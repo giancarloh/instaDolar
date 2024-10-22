@@ -1,0 +1,372 @@
+<html><head><base href="https://instadolar.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstaDolar - Cotización del Dólar y Calculadora de Divisas</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --secondary-blue: #007bff;
+            --light-blue: #e6f2ff;
+            --white: #ffffff;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .rates-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .rate-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            width: calc(33% - 20px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .rate-title {
+            font-size: 1.2rem;
+            color: var(--secondary-blue);
+            margin-bottom: 10px;
+        }
+        .rate-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .update-time {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--primary-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: background-color 0.3s ease;
+        }
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+        }
+        .whatsapp-button svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        .calculator {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .calculator h2 {
+            color: var(--secondary-blue);
+            margin-top: 0;
+        }
+        .calculator-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .calculator-button {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .calculator-button:hover {
+            background-color: var(--primary-blue);
+        }
+        .calculator-input {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .calculator-input label {
+            margin-bottom: 5px;
+        }
+        .calculator-input input {
+            padding: 10px;
+            border: 1px solid var(--secondary-blue);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .calculator-result-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .calculator-result {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: var(--light-blue);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .copy-button {
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .copy-button:hover {
+            background-color: var(--primary-blue);
+        }
+        .copy-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .copy-message.show {
+            opacity: 1;
+        }
+        @media (max-width: 600px) {
+            .rate-card {
+                width: 100%;
+            }
+            .calculator-buttons {
+                flex-direction: column;
+            }
+            .calculator-button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>InstaDolar</h1>
+    </header>
+    <div class="container">
+        <div class="rates-container">
+            <div class="rate-card">
+                <div class="rate-title">Dólar Oficial BCV</div>
+                <div class="rate-value" id="official-rate">Cargando...</div>
+            </div>
+            <div class="rate-card">
+                <div class="rate-title">Dólar Promedio</div>
+                <div class="rate-value" id="average-rate">Cargando...</div>
+            </div>
+            <div class="rate-card">
+                <div class="rate-title">Dólar Paralelo</div>
+                <div class="rate-value" id="parallel-rate">Cargando...</div>
+            </div>
+        </div>
+        <div class="update-time" id="update-time"></div>
+        
+        <div class="calculator">
+            <h2>Calculadora de Divisas</h2>
+            <div class="rate-selection">
+                <label><input type="radio" name="rate-type" value="official" checked> Dólar Oficial BCV</label>
+                <label><input type="radio" name="rate-type" value="average"> Dólar Promedio</label>
+                <label><input type="radio" name="rate-type" value="parallel"> Dólar Paralelo</label>
+            </div>
+            <div class="calculator-buttons">
+                <button id="bs-to-usd" class="calculator-button">De Bs a Dólares</button>
+                <button id="usd-to-bs" class="calculator-button">De Dólares a Bs</button>
+            </div>
+            <div class="calculator-input">
+                <label for="amount-input">Monto:</label>
+                <input type="number" id="amount-input" placeholder="Ingrese el monto">
+            </div>
+            <div class="calculator-result-container">
+                <div class="calculator-result" id="result"></div>
+                <button class="copy-button" id="copy-result">Copiar</button>
+            </div>
+            <div class="copy-message" id="copy-message">Copiado</div>
+        </div>
+    </div>
+    <a href="#" class="whatsapp-button" id="whatsapp-share">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+    </a>
+    <footer>
+        © <span id="current-year"></span> InstaDolar. Todos los derechos reservados. Hecho con ❤️ por yanDev
+    </footer>
+
+    <script>
+        const officialRateElement = document.getElementById('official-rate');
+        const parallelRateElement = document.getElementById('parallel-rate');
+        const averageRateElement = document.getElementById('average-rate');
+        const updateTimeElement = document.getElementById('update-time');
+        const whatsappShareButton = document.getElementById('whatsapp-share');
+        const currentYearElement = document.getElementById('current-year');
+        const bsToUsdButton = document.getElementById('bs-to-usd');
+        const usdToBsButton = document.getElementById('usd-to-bs');
+        const amountInput = document.getElementById('amount-input');
+        const resultElement = document.getElementById('result');
+        const copyButton = document.getElementById('copy-result');
+        const copyMessage = document.getElementById('copy-message');
+
+        let officialRate = 0;
+        let averageRate = 0;
+        let parallelRate = 0;
+        let currentRate = 0;
+        let currentMode = 'bs-to-usd';
+
+        currentYearElement.textContent = new Date().getFullYear();
+
+        async function fetchRates() {
+            try {
+                const officialResponse = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+                const officialData = await officialResponse.json();
+                const parallelResponse = await fetch('https://ve.dolarapi.com/v1/dolares/paralelo');
+                const parallelData = await parallelResponse.json();
+
+                averageRate = (officialData.promedio + parallelData.promedio) / 2;
+
+                officialRate = officialData.promedio;
+                parallelRate = parallelData.promedio;
+
+                officialRateElement.textContent = `Bs. ${officialRate.toFixed(2)}`;
+                parallelRateElement.textContent = `Bs. ${parallelRate.toFixed(2)}`;
+                averageRateElement.textContent = `Bs. ${averageRate.toFixed(2)}`;
+                
+                const updateTime = new Date(officialData.fechaActualizacion);
+                updateTimeElement.innerHTML = `<strong>Última actualización:</strong><br>${updateTime.toLocaleString('es-VE', { timeZone: 'America/Caracas' })}`;
+
+                updateWhatsAppShareLink(officialRate, parallelRate, averageRate);
+
+                updateCurrentRate();
+            } catch (error) {
+                console.error('Error fetching rates:', error);
+                officialRateElement.textContent = 'Error al cargar';
+                parallelRateElement.textContent = 'Error al cargar';
+                averageRateElement.textContent = 'Error al cargar';
+            }
+        }
+
+        function updateWhatsAppShareLink(officialRate, parallelRate, averageRate) {
+            const message = encodeURIComponent(`¡Cotización del dólar según InstaDolar!\n\nDólar Oficial BCV: Bs. ${officialRate.toFixed(2)}\nDólar Promedio: Bs. ${averageRate.toFixed(2)}\nDólar Paralelo: Bs. ${parallelRate.toFixed(2)}\n\nConsulta más en: https://instadolar.com`);
+            whatsappShareButton.href = `https://wa.me/?text=${message}`;
+        }
+
+        function updateCurrentRate() {
+            const selectedRate = document.querySelector('input[name="rate-type"]:checked').value;
+            switch (selectedRate) {
+                case 'official':
+                    currentRate = officialRate;
+                    break;
+                case 'average':
+                    currentRate = averageRate;
+                    break;
+                case 'parallel':
+                    currentRate = parallelRate;
+                    break;
+            }
+            calculate();
+        }
+
+        function calculate() {
+            const amount = parseFloat(amountInput.value);
+            if (isNaN(amount)) {
+                resultElement.textContent = 'Por favor, ingrese un monto válido.';
+                return;
+            }
+
+            let result;
+            if (currentMode === 'bs-to-usd') {
+                result = amount / currentRate;
+                resultElement.textContent = `${amount.toFixed(2)} Bs = $${result.toFixed(2)}`;
+            } else {
+                result = amount * currentRate;
+                resultElement.textContent = `$${amount.toFixed(2)} = ${result.toFixed(2)} Bs`;
+            }
+        }
+
+        copyButton.addEventListener('click', () => {
+            const resultText = resultElement.textContent;
+            navigator.clipboard.writeText(resultText).then(() => {
+                copyMessage.classList.add('show');
+                setTimeout(() => {
+                    copyMessage.classList.remove('show');
+                }, 2000);
+            });
+        });
+
+        bsToUsdButton.addEventListener('click', () => {
+            currentMode = 'bs-to-usd';
+            amountInput.placeholder = 'Ingrese monto en Bolívares';
+            calculate();
+        });
+
+        usdToBsButton.addEventListener('click', () => {
+            currentMode = 'usd-to-bs';
+            amountInput.placeholder = 'Ingrese monto en Dólares';
+            calculate();
+        });
+
+        amountInput.addEventListener('input', calculate);
+
+        document.querySelectorAll('input[name="rate-type"]').forEach(radio => {
+            radio.addEventListener('change', updateCurrentRate);
+        });
+
+        fetchRates();
+        setInterval(fetchRates, 300000);
+    </script>
+</body></html>
