@@ -8,6 +8,10 @@
             --secondary-blue: #007bff;
             --light-blue: #e6f2ff;
             --white: #ffffff;
+            --dark-bg: #1a1a1a;
+            --dark-card: #2d2d2d;
+            --dark-text: #ffffff;
+            --dark-blue: #4d94ff;
         }
         body {
             font-family: Arial, sans-serif;
@@ -18,6 +22,10 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+        }
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
         }
         .container {
             max-width: 800px;
@@ -31,6 +39,7 @@
             text-align: center;
             padding: 20px 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
         }
         h1 {
             margin: 0;
@@ -51,10 +60,17 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-align: center;
         }
+        body.dark-mode .rate-card {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
+        }
         .rate-title {
             font-size: 1.2rem;
             color: var(--secondary-blue);
             margin-bottom: 10px;
+        }
+        body.dark-mode .rate-title {
+            color: var(--dark-blue);
         }
         .rate-value {
             font-size: 2rem;
@@ -70,6 +86,10 @@
             color: var(--primary-blue);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        body.dark-mode .update-time {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
+        }
         footer {
             background-color: var(--primary-blue);
             color: var(--white);
@@ -84,15 +104,38 @@
             margin-top: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        body.dark-mode .calculator {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
+        }
         .calculator h2 {
             color: var(--secondary-blue);
             margin-top: 0;
         }
+        body.dark-mode .calculator h2 {
+            color: var(--dark-blue);
+        }
         .rate-selection {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 5px;
+            margin-bottom: 15px;
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        body.dark-mode .rate-selection {
+            background-color: var(--dark-card);
+        }
+        .rate-selection label {
+            display: block;
+            margin-bottom: 5px;
+            padding: 6px;
+            border-radius: 4px;
+            background-color: var(--white);
+        }
+        body.dark-mode .rate-selection label {
+            background-color: var(--dark-bg);
         }
         .calculator-buttons {
             display: flex;
@@ -119,11 +162,30 @@
         .calculator-input label {
             margin-bottom: 5px;
         }
-        .calculator-input input {
+        .calculator-input input,
+        #custom-rate-value {
             padding: 10px;
             border: 1px solid var(--secondary-blue);
             border-radius: 5px;
             font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        body.dark-mode .calculator-input input,
+        body.dark-mode #custom-rate-value {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
+            border-color: var(--dark-blue);
+        }
+        #custom-rate-input {
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+        body.dark-mode #custom-rate-input {
+            background-color: var(--dark-card);
         }
         .calculator-result-container {
             display: flex;
@@ -138,6 +200,10 @@
             padding: 10px 15px;
             border-radius: 5px;
             margin-right: 10px;
+        }
+        body.dark-mode .calculator-result {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
         }
         .copy-button {
             background-color: var(--secondary-blue);
@@ -155,7 +221,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: var(--secondary-blue);
+            background-color: #4CAF50;
             color: var(--white);
             padding: 10px 20px;
             border-radius: 5px;
@@ -194,11 +260,82 @@
                 width: 100%;
             }
         }
+        .theme-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "OFF";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: #666;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+            content: "ON";
+            color: #2196F3;
+        }
+        .calculator-result {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: var(--light-blue);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        body.dark-mode .calculator-result {
+            background-color: var(--dark-card);
+            color: var(--dark-text);
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>InstaDolar</h1>
+        <div class="theme-switch-container">
+            <label class="theme-switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
     </header>
     <div class="container">
         <div class="rates-container">
@@ -223,6 +360,11 @@
                 <label><input type="radio" name="rate-type" value="official" checked> Dólar Oficial BCV</label>
                 <label><input type="radio" name="rate-type" value="average"> Dólar Promedio</label>
                 <label><input type="radio" name="rate-type" value="parallel"> Dólar Paralelo</label>
+                <label><input type="radio" name="rate-type" value="custom"> Dólar Valor Personalizado</label>
+            </div>
+            <div id="custom-rate-input" style="display: none; margin-top: 5px;">
+                <label>Valor personalizado (Bs):</label>
+                <input type="number" id="custom-rate-value" placeholder="Ingrese tasa personalizada">
             </div>
             <div class="calculator-buttons">
                 <button id="bs-to-usd" class="calculator-button">De Bs a Dólares</button>
@@ -255,6 +397,9 @@
         const resultElement = document.getElementById('result');
         const copyButton = document.getElementById('copy-result');
         const copyMessage = document.getElementById('copy-message');
+        const themeToggle = document.getElementById('theme-toggle');
+        const customRateInput = document.getElementById('custom-rate-input');
+        const customRateValue = document.getElementById('custom-rate-value');
 
         let officialRate = 0;
         let averageRate = 0;
@@ -294,16 +439,22 @@
 
         function updateCurrentRate() {
             const selectedRate = document.querySelector('input[name="rate-type"]:checked').value;
-            switch (selectedRate) {
-                case 'official':
-                    currentRate = officialRate;
-                    break;
-                case 'average':
-                    currentRate = averageRate;
-                    break;
-                case 'parallel':
-                    currentRate = parallelRate;
-                    break;
+            if (selectedRate === 'custom') {
+                customRateInput.style.display = 'block';
+                currentRate = parseFloat(customRateValue.value) || 0;
+            } else {
+                customRateInput.style.display = 'none';
+                switch (selectedRate) {
+                    case 'official':
+                        currentRate = officialRate;
+                        break;
+                    case 'average':
+                        currentRate = averageRate;
+                        break;
+                    case 'parallel':
+                        currentRate = parallelRate;
+                        break;
+                }
             }
             calculate();
         }
@@ -361,6 +512,26 @@ Gracias por usar InstaDolar.com`;
 
         document.querySelectorAll('input[name="rate-type"]').forEach(radio => {
             radio.addEventListener('change', updateCurrentRate);
+        });
+
+        customRateValue.addEventListener('input', updateCurrentRate);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+            const savedTheme = localStorage.getItem('darkMode');
+            
+            if (savedTheme !== null) {
+                document.body.classList.toggle('dark-mode', savedTheme === 'true');
+                themeToggle.checked = savedTheme === 'true';
+            } else {
+                document.body.classList.toggle('dark-mode', prefersDark.matches);
+                themeToggle.checked = prefersDark.matches;
+            }
+            
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-mode', themeToggle.checked);
+                localStorage.setItem('darkMode', themeToggle.checked);
+            });
         });
 
         fetchRates();
