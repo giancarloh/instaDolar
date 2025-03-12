@@ -1,340 +1,28 @@
-<html><head><base href="https://instadolar.com">
+<!DOCTYPE html>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InstaDolar - Cotización del Dólar y Calculadora de Divisas</title>
-    <style>
-        :root {
-            --primary-blue: #0056b3;
-            --secondary-blue: #007bff;
-            --light-blue: #e6f2ff;
-            --white: #ffffff;
-            --dark-bg: #1a1a1a;
-            --dark-card: #2d2d2d;
-            --dark-text: #ffffff;
-            --dark-blue: #4d94ff;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--light-blue);
-            color: var(--primary-blue);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        body.dark-mode {
-            background-color: var(--dark-bg);
-            color: var(--dark-text);
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
-        }
-        header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            text-align: center;
-            padding: 20px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
-        .rates-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-        .rate-card {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 10px;
-            width: calc(33% - 20px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        body.dark-mode .rate-card {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-        }
-        .rate-title {
-            font-size: 1.2rem;
-            color: var(--secondary-blue);
-            margin-bottom: 10px;
-        }
-        body.dark-mode .rate-title {
-            color: var(--dark-blue);
-        }
-        .rate-value {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        .update-time {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 1rem;
-            color: var(--primary-blue);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        body.dark-mode .update-time {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-        }
-        footer {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            text-align: center;
-            padding: 10px 0;
-            font-size: 0.9rem;
-        }
-        .calculator {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        body.dark-mode .calculator {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-        }
-        .calculator h2 {
-            color: var(--secondary-blue);
-            margin-top: 0;
-        }
-        body.dark-mode .calculator h2 {
-            color: var(--dark-blue);
-        }
-        .rate-selection {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 15px;
-            background-color: var(--light-blue);
-            padding: 15px;
-            border-radius: 8px;
-        }
-        body.dark-mode .rate-selection {
-            background-color: var(--dark-card);
-        }
-        .rate-selection label {
-            display: block;
-            margin-bottom: 5px;
-            padding: 6px;
-            border-radius: 4px;
-            background-color: var(--white);
-        }
-        body.dark-mode .rate-selection label {
-            background-color: var(--dark-bg);
-        }
-        .calculator-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .calculator-button {
-            background-color: var(--secondary-blue);
-            color: var(--white);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .calculator-button:hover {
-            background-color: var(--primary-blue);
-        }
-        .calculator-input {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        .calculator-input label {
-            margin-bottom: 5px;
-        }
-        .calculator-input input,
-        #custom-rate-value {
-            padding: 10px;
-            border: 1px solid var(--secondary-blue);
-            border-radius: 5px;
-            font-size: 1rem;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-        body.dark-mode .calculator-input input,
-        body.dark-mode #custom-rate-value {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-            border-color: var(--dark-blue);
-        }
-        #custom-rate-input {
-            background-color: var(--light-blue);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 5px;
-        }
-        body.dark-mode #custom-rate-input {
-            background-color: var(--dark-card);
-        }
-        .calculator-result-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .calculator-result {
-            font-size: 1.2rem;
-            font-weight: bold;
-            background-color: var(--light-blue);
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-        body.dark-mode .calculator-result {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-        }
-        .copy-button {
-            background-color: var(--secondary-blue);
-            color: var(--white);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .copy-button:hover {
-            background-color: var(--primary-blue);
-        }
-        .copy-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #4CAF50;
-            color: var(--white);
-            padding: 10px 20px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .copy-message.show {
-            opacity: 1;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-            .rate-card {
-                width: calc(100% - 20px);
-                margin: 10px 0;
-            }
-            .calculator-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .calculator-button {
-                width: 100%;
-                margin: 0;
-            }
-            .calculator-result-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .calculator-result {
-                width: 100%;
-                margin: 0;
-                text-align: center;
-            }
-            .copy-button {
-                width: 100%;
-            }
-        }
-        .theme-switch-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "OFF";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            font-weight: bold;
-            color: #666;
-        }
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-            content: "ON";
-            color: #2196F3;
-        }
-        .calculator-result {
-            font-size: 1.2rem;
-            font-weight: bold;
-            background-color: var(--light-blue);
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-        body.dark-mode .calculator-result {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-        }
-    </style>
+    <title>Dolarito Online - Cotización del Dólar y Calculadora de Divisas</title>
+    <meta name="description" content="Consulta la cotización actualizada del dólar en Venezuela y utiliza nuestra calculadora de divisas para conversiones rápidas y precisas.">
+    <meta name="keywords" content="dólar Venezuela, calculadora de divisas, tipo de cambio, bolívares, dolarito, dólar oficial, dólar paralelo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dolarito.online">
+    <meta property="og:title" content="Dolarito Online - Cotización del Dólar en Venezuela">
+    <meta property="og:description" content="Consulta la cotización actualizada del dólar y realiza conversiones entre bolívares y dólares.">
+    <meta property="og:url" content="https://dolarito.online">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>InstaDolar</h1>
+        <h1>Dolarito Online</h1>
         <div class="theme-switch-container">
             <label class="theme-switch">
                 <input type="checkbox" id="theme-toggle">
                 <span class="slider"></span>
             </label>
+            <div class="theme-text">Modo Oscuro</div>
         </div>
     </header>
     <div class="container">
@@ -356,185 +44,39 @@
         
         <div class="calculator">
             <h2>Calculadora de Divisas</h2>
-            <div class="rate-selection">
-                <label><input type="radio" name="rate-type" value="official" checked> Dólar Oficial BCV</label>
-                <label><input type="radio" name="rate-type" value="average"> Dólar Promedio</label>
-                <label><input type="radio" name="rate-type" value="parallel"> Dólar Paralelo</label>
-                <label><input type="radio" name="rate-type" value="custom"> Dólar Valor Personalizado</label>
+            <div class="rate-buttons">
+                <button class="rate-button active" data-rate="official">Dólar Oficial BCV</button>
+                <button class="rate-button" data-rate="average">Dólar Promedio</button>
+                <button class="rate-button" data-rate="parallel">Dólar Paralelo</button>
+                <button class="rate-button" data-rate="custom">Dólar Valor Personalizado</button>
             </div>
-            <div id="custom-rate-input" style="display: none; margin-top: 5px;">
-                <label>Valor personalizado (Bs):</label>
+            <div id="custom-rate-input">
+                <label for="custom-rate-value">Valor personalizado (Bs):</label>
                 <input type="number" id="custom-rate-value" placeholder="Ingrese tasa personalizada">
-            </div>
-            <div class="calculator-buttons">
-                <button id="bs-to-usd" class="calculator-button">De Bs a Dólares</button>
-                <button id="usd-to-bs" class="calculator-button">De Dólares a Bs</button>
             </div>
             <div class="calculator-input">
                 <label for="amount-input">Monto:</label>
                 <input type="number" id="amount-input" placeholder="Ingrese el monto">
             </div>
+            <div class="calculator-buttons">
+                <button id="bs-to-usd" class="calculator-button">De Bs a Dólares</button>
+                <button id="usd-to-bs" class="calculator-button">De Dólares a Bs</button>
+            </div>
             <div class="calculator-result-container">
                 <div class="calculator-result" id="result"></div>
-                <button class="copy-button" id="copy-result">Copiar</button>
+                <button class="copy-button" id="copy-result">
+                    <svg class="share-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+                    </svg>
+                    Compartir
+                </button>
             </div>
-            <div class="copy-message" id="copy-message">Copiado</div>
         </div>
     </div>
     <footer>
-        © <span id="current-year"></span> InstaDolar. Todos los derechos reservados. Hecho con ❤️ por yanDev
+        &copy; <span id="current-year"></span> Dolarito Online. Todos los derechos reservados. Hecho con &hearts; por yanDev
     </footer>
 
-    <script>
-        const officialRateElement = document.getElementById('official-rate');
-        const parallelRateElement = document.getElementById('parallel-rate');
-        const averageRateElement = document.getElementById('average-rate');
-        const updateTimeElement = document.getElementById('update-time');
-        const currentYearElement = document.getElementById('current-year');
-        const bsToUsdButton = document.getElementById('bs-to-usd');
-        const usdToBsButton = document.getElementById('usd-to-bs');
-        const amountInput = document.getElementById('amount-input');
-        const resultElement = document.getElementById('result');
-        const copyButton = document.getElementById('copy-result');
-        const copyMessage = document.getElementById('copy-message');
-        const themeToggle = document.getElementById('theme-toggle');
-        const customRateInput = document.getElementById('custom-rate-input');
-        const customRateValue = document.getElementById('custom-rate-value');
-
-        let officialRate = 0;
-        let averageRate = 0;
-        let parallelRate = 0;
-        let currentRate = 0;
-        let currentMode = 'bs-to-usd';
-
-        currentYearElement.textContent = new Date().getFullYear();
-
-        async function fetchRates() {
-            try {
-                const officialResponse = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-                const officialData = await officialResponse.json();
-                const parallelResponse = await fetch('https://ve.dolarapi.com/v1/dolares/paralelo');
-                const parallelData = await parallelResponse.json();
-
-                averageRate = (officialData.promedio + parallelData.promedio) / 2;
-
-                officialRate = officialData.promedio;
-                parallelRate = parallelData.promedio;
-
-                officialRateElement.textContent = `Bs. ${officialRate.toFixed(2)}`;
-                parallelRateElement.textContent = `Bs. ${parallelRate.toFixed(2)}`;
-                averageRateElement.textContent = `Bs. ${averageRate.toFixed(2)}`;
-                
-                const updateTime = new Date(officialData.fechaActualizacion);
-                updateTimeElement.innerHTML = `<strong>Última actualización:</strong><br>${updateTime.toLocaleString('es-VE', { timeZone: 'America/Caracas' })}`;
-
-                updateCurrentRate();
-            } catch (error) {
-                console.error('Error fetching rates:', error);
-                officialRateElement.textContent = 'Error al cargar';
-                parallelRateElement.textContent = 'Error al cargar';
-                averageRateElement.textContent = 'Error al cargar';
-            }
-        }
-
-        function updateCurrentRate() {
-            const selectedRate = document.querySelector('input[name="rate-type"]:checked').value;
-            if (selectedRate === 'custom') {
-                customRateInput.style.display = 'block';
-                currentRate = parseFloat(customRateValue.value) || 0;
-            } else {
-                customRateInput.style.display = 'none';
-                switch (selectedRate) {
-                    case 'official':
-                        currentRate = officialRate;
-                        break;
-                    case 'average':
-                        currentRate = averageRate;
-                        break;
-                    case 'parallel':
-                        currentRate = parallelRate;
-                        break;
-                }
-            }
-            calculate();
-        }
-
-        function calculate() {
-            const amount = parseFloat(amountInput.value);
-            if (isNaN(amount)) {
-                resultElement.textContent = 'Por favor, ingrese un monto válido.';
-                return;
-            }
-
-            let result;
-            if (currentMode === 'bs-to-usd') {
-                result = amount / currentRate;
-                resultElement.textContent = `${amount.toFixed(2)} Bs = $${result.toFixed(2)}`;
-            } else {
-                result = amount * currentRate;
-                resultElement.textContent = `$${amount.toFixed(2)} = ${result.toFixed(2)} Bs`;
-            }
-        }
-
-        copyButton.addEventListener('click', () => {
-            const selectedRate = document.querySelector('input[name="rate-type"]:checked').value;
-            const rateTypeText = {
-                'official': `Dólar Oficial BCV (Bs. ${officialRate.toFixed(2)})`,
-                'average': `Dólar Promedio (Bs. ${averageRate.toFixed(2)})`,
-                'parallel': `Dólar Paralelo (Bs. ${parallelRate.toFixed(2)})`
-            }[selectedRate];
-            
-            const resultText = `Calculado con el ${rateTypeText}
-${resultElement.textContent}.
-Gracias por usar InstaDolar.com`;
-
-            navigator.clipboard.writeText(resultText).then(() => {
-                copyMessage.classList.add('show');
-                setTimeout(() => {
-                    copyMessage.classList.remove('show');
-                }, 2000);
-            });
-        });
-
-        bsToUsdButton.addEventListener('click', () => {
-            currentMode = 'bs-to-usd';
-            amountInput.placeholder = 'Ingrese monto en Bolívares';
-            calculate();
-        });
-
-        usdToBsButton.addEventListener('click', () => {
-            currentMode = 'usd-to-bs';
-            amountInput.placeholder = 'Ingrese monto en Dólares';
-            calculate();
-        });
-
-        amountInput.addEventListener('input', calculate);
-
-        document.querySelectorAll('input[name="rate-type"]').forEach(radio => {
-            radio.addEventListener('change', updateCurrentRate);
-        });
-
-        customRateValue.addEventListener('input', updateCurrentRate);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-            const savedTheme = localStorage.getItem('darkMode');
-            
-            if (savedTheme !== null) {
-                document.body.classList.toggle('dark-mode', savedTheme === 'true');
-                themeToggle.checked = savedTheme === 'true';
-            } else {
-                document.body.classList.toggle('dark-mode', prefersDark.matches);
-                themeToggle.checked = prefersDark.matches;
-            }
-            
-            themeToggle.addEventListener('change', () => {
-                document.body.classList.toggle('dark-mode', themeToggle.checked);
-                localStorage.setItem('darkMode', themeToggle.checked);
-            });
-        });
-
-        fetchRates();
-        setInterval(fetchRates, 300000);
-    </script>
-</body></html>
+    <script src="script.js"></script>
+</body>
+</html>
