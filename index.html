@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -14,14 +13,15 @@
     <meta property="og:type" content="website">
     <style>
         :root {
-            --primary-blue: #0056b3;
-            --secondary-blue: #007bff;
-            --light-blue: #e6f2ff;
+            --primary-blue: #2C3E50;
+            --secondary-blue: #3498DB;
+            --light-blue: #F8F9FA;
             --white: #ffffff;
-            --dark-bg: #1a1a1a;
-            --dark-card: #2d2d2d;
+            --dark-bg: #0E0D12;
+            --dark-card: #24212B;
             --dark-text: #ffffff;
             --dark-blue: #4d94ff;
+            --button-green: #2ECC71;
         }
         body {
             font-family: Arial, sans-serif;
@@ -62,13 +62,14 @@
             margin-top: 30px;
         }
         .rate-card {
-            background-color: var(--white);
+            background-color: var(--secondary-blue);
             border-radius: 8px;
             padding: 20px;
             margin: 10px;
             width: calc(33% - 20px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-align: center;
+            color: var(--white);
         }
         body.dark-mode .rate-card {
             background-color: var(--dark-card);
@@ -76,7 +77,7 @@
         }
         .rate-title {
             font-size: 1.2rem;
-            color: var(--secondary-blue);
+            color: var(--white);
             margin-bottom: 10px;
         }
         body.dark-mode .rate-title {
@@ -131,28 +132,31 @@
             gap: 10px;
             margin-bottom: 20px;
         }
-        .rate-button {
-            padding: 12px 20px;
+        .rate-select {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
             border: 2px solid var(--secondary-blue);
-            background-color: var(--white);
-            color: var(--secondary-blue);
             border-radius: 8px;
-            cursor: pointer;
             font-size: 1rem;
+            background-color: var(--white);
+            color: var(--primary-blue);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .rate-button.active {
-            background-color: var(--secondary-blue);
-            color: var(--white);
-        }
-        body.dark-mode .rate-button {
+        body.dark-mode .rate-select {
             background-color: var(--dark-card);
             border-color: var(--dark-blue);
             color: var(--dark-text);
         }
-        body.dark-mode .rate-button.active {
-            background-color: var(--dark-blue);
-            color: var(--white);
+        .rate-select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 5px rgba(0,86,179,0.3);
+        }
+        body.dark-mode .rate-select:focus {
+            border-color: var(--dark-blue);
+            box-shadow: 0 0 5px rgba(77,148,255,0.3);
         }
         .calculator-buttons {
             display: flex;
@@ -164,7 +168,7 @@
             flex: 1;
             padding: 15px 25px;
             font-size: 1.1rem;
-            background-color: var(--secondary-blue);
+            background-color: var(--button-green);
             color: var(--white);
             border: none;
             border-radius: 8px;
@@ -173,7 +177,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .calculator-button:hover {
-            background-color: var(--primary-blue);
+            background-color: #27ae60;
             transform: translateY(-2px);
         }
         body.dark-mode .calculator-button {
@@ -201,7 +205,7 @@
         }
         .copy-button {
             padding: 15px 30px;
-            background-color: var(--secondary-blue);
+            background-color: var(--button-green);
             color: var(--white);
             border: none;
             border-radius: 8px;
@@ -211,7 +215,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .copy-button:hover {
-            background-color: var(--primary-blue);
+            background-color: #27ae60;
             transform: translateY(-2px);
         }
         body.dark-mode .copy-button {
@@ -328,7 +332,7 @@
             border-radius: 50%;
         }
         input:checked + .slider {
-            background-color: #2196F3;
+            background-color: var(--button-green);
         }
         input:checked + .slider:before {
             transform: translateX(26px);
@@ -410,11 +414,14 @@
         
         <div class="calculator">
             <h2>Calculadora de Divisas</h2>
-            <div class="rate-buttons" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-                <button class="rate-button active" data-rate="official">Dólar Oficial BCV</button>
-                <button class="rate-button" data-rate="average">Dólar Promedio</button>
-                <button class="rate-button" data-rate="parallel">Dólar Paralelo</button>
-                <button class="rate-button" data-rate="custom">Dólar Valor Personalizado</button>
+            <div class="rate-buttons" style="margin-bottom: 15px;">
+                <label for="rate-select">Seleccione el tipo de tasa:</label>
+                <select id="rate-select" class="rate-select">
+                    <option value="official">Dólar Oficial BCV</option>
+                    <option value="average">Dólar Promedio</option>
+                    <option value="parallel">Dólar Paralelo</option>
+                    <option value="custom">Dólar Valor Personalizado</option>
+                </select>
             </div>
             <div id="custom-rate-input" style="display: none; margin-bottom: 15px;">
                 <label for="custom-rate-value">Valor personalizado (Bs):</label>
@@ -424,9 +431,12 @@
                 <label for="amount-input">Monto:</label>
                 <input type="number" id="amount-input" placeholder="Ingrese el monto" style="width: calc(100% - 28px); padding: 12px; margin: 5px 0; border: 2px solid var(--secondary-blue); border-radius: 8px; font-size: 1rem; background-color: var(--white); color: var(--primary-blue); transition: all 0.3s ease;">
             </div>
-            <div class="calculator-buttons">
-                <button id="bs-to-usd" class="calculator-button">De Bs a Dólares</button>
-                <button id="usd-to-bs" class="calculator-button">De Dólares a Bs</button>
+            <div class="rate-buttons" style="margin-bottom: 15px;">
+                <label for="conversion-select">Seleccione el tipo de conversión:</label>
+                <select id="conversion-select" class="rate-select">
+                    <option value="bs-to-usd">De Bs a Dólares</option>
+                    <option value="usd-to-bs">De Dólares a Bs</option>
+                </select>
             </div>
             <div class="calculator-result-container">
                 <div class="calculator-result" id="result"></div>
@@ -440,7 +450,7 @@
         </div>
     </div>
     <footer>
-        &copy; <span id="current-year"></span> Dolarito Online. Todos los derechos reservados. Hecho con &hearts; por yanDev
+        &copy; <span id="current-year"></span> Dolarito Online. Todos los derechos reservados.
     </footer>
 
     <script>
@@ -449,8 +459,6 @@
         const averageRateElement = document.getElementById('average-rate');
         const updateTimeElement = document.getElementById('update-time');
         const currentYearElement = document.getElementById('current-year');
-        const bsToUsdButton = document.getElementById('bs-to-usd');
-        const usdToBsButton = document.getElementById('usd-to-bs');
         const amountInput = document.getElementById('amount-input');
         const resultElement = document.getElementById('result');
         const copyButton = document.getElementById('copy-result');
@@ -495,7 +503,7 @@
         }
 
         function updateCurrentRate() {
-            const selectedRate = document.querySelector('.rate-button.active').dataset.rate;
+            const selectedRate = document.getElementById('rate-select').value;
             if (selectedRate === 'custom') {
                 customRateInput.style.display = 'block';
                 currentRate = parseFloat(customRateValue.value) || 0;
@@ -534,7 +542,7 @@
         }
 
         copyButton.addEventListener('click', () => {
-            const selectedRate = document.querySelector('.rate-button.active').dataset.rate;
+            const selectedRate = document.getElementById('rate-select').value;
             let rateValue;
             let rateTypeText;
             
@@ -565,14 +573,14 @@
                 if (match) {
                     amount = match[1];
                     convertedAmount = match[2];
-                    calculatedResult = `📌 ¡ Calculado en https://dolarito.online !\n*$ ${convertedAmount} USD* equivalen a *Bs ${amount}*\nTasa De Cambio Aplicada: *Bs ${rateValue.toFixed(2)}*\n\n¿Necesitas verificar otra cantidad?\n¡Visitanos ya! 🚀`;
+                    calculatedResult = `¡ Calculado en https://dolarito.online !\n*$ ${convertedAmount} USD* equivalen a *Bs ${amount}*\nTasa De Cambio Aplicada: *Bs ${rateValue.toFixed(2)}*\n\n¿Necesitas verificar otra cantidad?\n¡Visitanos ya! `;
                 }
             } else {
                 const match = resultText.match(/\$(\d+\.\d+)\s+=\s+(\d+\.\d+)\s+Bs/);
                 if (match) {
                     amount = match[1];
                     convertedAmount = match[2];
-                    calculatedResult = `📌 ¡ Calculado en https://dolarito.online !\n*$ ${amount} USD* equivalen a *Bs ${convertedAmount}*\nTasa De Cambio Aplicada: *Bs ${rateValue.toFixed(2)}*\n\n¿Necesitas verificar otra cantidad?\n¡Visitanos ya! 🚀`;
+                    calculatedResult = `¡ Calculado en https://dolarito.online !\n*$ ${amount} USD* equivalen a *Bs ${convertedAmount}*\nTasa De Cambio Aplicada: *Bs ${rateValue.toFixed(2)}*\n\n¿Necesitas verificar otra cantidad?\n¡Visitanos ya! `;
                 }
             }
             
@@ -582,40 +590,22 @@
             window.open(whatsappUrl, '_blank');
         });
 
-        bsToUsdButton.addEventListener('click', () => {
-            currentMode = 'bs-to-usd';
-            amountInput.placeholder = 'Ingrese monto en Bolívares';
-            calculate();
-        });
-
-        usdToBsButton.addEventListener('click', () => {
-            currentMode = 'usd-to-bs';
-            amountInput.placeholder = 'Ingrese monto en Dólares';
+        const conversionSelect = document.getElementById('conversion-select');
+        
+        conversionSelect.addEventListener('change', () => {
+            currentMode = conversionSelect.value;
+            if (currentMode === 'bs-to-usd') {
+                amountInput.placeholder = 'Ingrese monto en Bolívares';
+            } else {
+                amountInput.placeholder = 'Ingrese monto en Dólares';
+            }
             calculate();
         });
 
         amountInput.addEventListener('input', calculate);
 
-        const rateButtons = document.querySelectorAll('.rate-button');
-        rateButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                rateButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                const rateType = button.dataset.rate;
-                if (rateType === 'custom') {
-                    customRateInput.style.display = 'block';
-                    currentRate = parseFloat(customRateValue.value) || 0;
-                } else {
-                    customRateInput.style.display = 'none';
-                    switch (rateType) {
-                        case 'official': currentRate = officialRate; break;
-                        case 'average': currentRate = averageRate; break;
-                        case 'parallel': currentRate = parallelRate; break;
-                    }
-                }
-                calculate();
-            });
-        });
+        const rateSelect = document.getElementById('rate-select');
+        rateSelect.addEventListener('change', updateCurrentRate);
 
         customRateValue.addEventListener('input', updateCurrentRate);
 
