@@ -11,27 +11,40 @@
     <meta property="og:description" content="Consulta la cotización actualizada del dólar y realiza conversiones entre bolívares y dólares.">
     <meta property="og:url" content="https://dolarito.online">
     <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-blue: #2C3E50;
             --secondary-blue: #3498DB;
-            --light-blue: #F8F9FA;
+            --light-blue: #ECF0F1;
             --white: #ffffff;
             --dark-bg: #0E0D12;
             --dark-card: #24212B;
-            --dark-text: #ffffff;
+            --dark-text: #F5F5F5;
+            --light-text: #E0E0E0;
             --dark-blue: #4d94ff;
             --button-green: #2ECC71;
+            --bcv-color: #2ECC71;
+            --avg-color: #3498DB;
+            --parallel-color: #E67E22;
+            --bcv-bg: #AED6F1;
+            --avg-bg: #ABEBC6;
+            --parallel-bg: #FAD7A0;
+            --text-dark: #2C3E50;
+            --text-secondary: #95A5A6;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-blue);
-            color: var(--primary-blue);
+            color: var(--text-dark);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            line-height: 1.6;
+            font-size: 16px;
         }
         body.dark-mode {
             background-color: var(--dark-bg);
@@ -47,73 +60,107 @@
             background-color: var(--primary-blue);
             color: var(--white);
             text-align: center;
-            padding: 20px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 25px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             position: relative;
         }
         h1 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 20px;
         }
         .rates-container {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 40px;
+            gap: 20px;
         }
         .rate-card {
+            position: relative;
             background-color: var(--secondary-blue);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             margin: 10px;
-            width: calc(33% - 20px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: calc(33% - 40px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             text-align: center;
             color: var(--white);
+            transition: all 0.3s ease;
+        }
+        .rate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+        }
+        .rate-card:nth-child(1) {
+            background-color: var(--bcv-color);
+        }
+        .rate-card:nth-child(2) {
+            background-color: var(--avg-color);
+        }
+        .rate-card:nth-child(3) {
+            background-color: var(--parallel-color);
         }
         body.dark-mode .rate-card {
             background-color: var(--dark-card);
             color: var(--dark-text);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .rate-title {
-            font-size: 1.2rem;
-            color: var(--white);
+        body.dark-mode .rate-card:nth-child(1) {
+            border-left: 4px solid var(--bcv-color);
+        }
+        body.dark-mode .rate-card:nth-child(2) {
+            border-left: 4px solid var(--avg-color);
+        }
+        body.dark-mode .rate-card:nth-child(3) {
+            border-left: 4px solid var(--parallel-color);
+        }
+        .rate-icon {
+            font-size: 2rem;
             margin-bottom: 10px;
         }
+        .rate-title {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         body.dark-mode .rate-title {
-            color: var(--dark-blue);
+            color: var(--dark-text);
         }
         .rate-value {
-            font-size: 2rem;
+            font-size: 2.4rem;
             font-weight: bold;
         }
         .update-time {
             background-color: var(--white);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--primary-blue);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         body.dark-mode .update-time {
             background-color: var(--dark-card);
             color: var(--dark-text);
         }
-        footer {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            text-align: center;
-            padding: 10px 0;
-            font-size: 0.9rem;
-        }
         .calculator {
             background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
         body.dark-mode .calculator {
             background-color: var(--dark-card);
@@ -122,6 +169,8 @@
         .calculator h2 {
             color: var(--secondary-blue);
             margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
         }
         body.dark-mode .calculator h2 {
             color: var(--dark-blue);
@@ -287,27 +336,17 @@
         .theme-switch-container {
             position: absolute;
             top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
+            left: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        .theme-text {
-            color: white;
-            font-size: 0.7rem;
-            margin-top: 3px;
+            transform: translateY(-50%);
         }
         .theme-switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+            width: 50px;
+            height: 30px;
         }
         .slider {
             position: absolute;
@@ -319,35 +358,22 @@
             background-color: #ccc;
             transition: .4s;
             border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5px;
+            overflow: hidden;
+            border: 2px solid var(--light-blue);
         }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        body.dark-mode .slider {
+            border: 2px solid var(--dark-text);
         }
-        input:checked + .slider {
-            background-color: var(--button-green);
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        .slider .moon-icon,
-        .slider .sun-icon,
-        .slider-icon {
-            display: none;
-        }
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 10px;
             }
             .rate-card {
-                width: calc(100% - 20px);
+                width: calc(100% - 40px);
                 margin: 10px 0;
             }
             .calculator-buttons {
@@ -360,53 +386,57 @@
                 width: 100%;
             }
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+                text-align: right;
+                padding-right: 15px;
+                margin-left: 60px;
             }
             .theme-switch-container {
                 top: 50%;
-                right: 10px;
+                left: 12px;
                 transform: translateY(-50%);
             }
-            .theme-switch {
-                width: 50px;
-                height: 28px;
-            }
-            .slider:before {
-                height: 20px;
-                width: 20px;
-            }
-            input:checked + .slider:before {
-                transform: translateX(22px);
-            }
             .theme-text {
-                font-size: 0.6rem;
+                font-size: 0.7rem;
             }
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Dolarito Online</h1>
         <div class="theme-switch-container">
             <label class="theme-switch">
                 <input type="checkbox" id="theme-toggle">
-                <span class="slider"></span>
+                <span class="slider">
+                </span>
             </label>
             <div class="theme-text">Modo Oscuro</div>
         </div>
+        <h1>Dolarito Online</h1>
     </header>
     <div class="container">
         <div class="rates-container">
             <div class="rate-card">
-                <div class="rate-title">Dólar Oficial BCV</div>
+                <div class="rate-title">🏦 Dólar Oficial BCV</div>
                 <div class="rate-value" id="official-rate">Cargando...</div>
             </div>
             <div class="rate-card">
-                <div class="rate-title">Dólar Promedio</div>
+                <div class="rate-title">📊 Dólar Promedio</div>
                 <div class="rate-value" id="average-rate">Cargando...</div>
             </div>
             <div class="rate-card">
-                <div class="rate-title">Dólar Paralelo</div>
+                <div class="rate-title">💹 Dólar Paralelo</div>
                 <div class="rate-value" id="parallel-rate">Cargando...</div>
             </div>
         </div>
@@ -621,12 +651,76 @@
                 themeToggle.checked = prefersDark.matches;
             }
             
+            // Create animated sun/moon icons for the switch
+            const createAnimatedToggleIcons = () => {
+                const slider = document.querySelector('.slider');
+                
+                // Clear existing icons
+                slider.querySelector('.moon-icon')?.remove();
+                slider.querySelector('.sun-icon')?.remove();
+                
+                // Add SVG sun/moon icons with animation
+                const moonSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                moonSVG.setAttribute('class', 'moon-icon');
+                moonSVG.setAttribute('width', '16');
+                moonSVG.setAttribute('height', '16');
+                moonSVG.setAttribute('viewBox', '0 0 24 24');
+                moonSVG.setAttribute('fill', 'none');
+                moonSVG.setAttribute('stroke', 'currentColor');
+                moonSVG.setAttribute('stroke-width', '2');
+                moonSVG.setAttribute('stroke-linecap', 'round');
+                moonSVG.setAttribute('stroke-linejoin', 'round');
+                moonSVG.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                moonSVG.style.position = 'absolute';
+                moonSVG.style.left = '5px';
+                moonSVG.style.top = '7px';
+                moonSVG.style.color = '#fff';
+                moonSVG.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+                moonSVG.style.opacity = themeToggle.checked ? '0' : '1';
+                moonSVG.style.transform = themeToggle.checked ? 'scale(0.7)' : 'scale(1)';
+                
+                const sunSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                sunSVG.setAttribute('class', 'sun-icon');
+                sunSVG.setAttribute('width', '16');
+                sunSVG.setAttribute('height', '16');
+                sunSVG.setAttribute('viewBox', '0 0 24 24');
+                sunSVG.setAttribute('fill', 'none');
+                sunSVG.setAttribute('stroke', 'currentColor');
+                sunSVG.setAttribute('stroke-width', '2');
+                sunSVG.setAttribute('stroke-linecap', 'round');
+                sunSVG.setAttribute('stroke-linejoin', 'round');
+                sunSVG.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+                sunSVG.style.position = 'absolute';
+                sunSVG.style.right = '5px';
+                sunSVG.style.top = '7px';
+                sunSVG.style.color = '#FDB813';
+                sunSVG.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+                sunSVG.style.opacity = themeToggle.checked ? '1' : '0';
+                sunSVG.style.transform = themeToggle.checked ? 'scale(1)' : 'scale(0.7)';
+                
+                slider.appendChild(moonSVG);
+                slider.appendChild(sunSVG);
+                
+                themeToggle.addEventListener('change', () => {
+                    document.body.classList.toggle('dark-mode', themeToggle.checked);
+                    localStorage.setItem('darkMode', themeToggle.checked);
+                    
+                    // Update icon animations
+                    moonSVG.style.opacity = themeToggle.checked ? '0' : '1';
+                    moonSVG.style.transform = themeToggle.checked ? 'scale(0.7)' : 'scale(1)';
+                    sunSVG.style.opacity = themeToggle.checked ? '1' : '0';
+                    sunSVG.style.transform = themeToggle.checked ? 'scale(1)' : 'scale(0.7)';
+                });
+            };
+            
+            createAnimatedToggleIcons();
+            
             // Check if mobile and adjust styles if needed
-            const isMobile = window.innerWidth <= 600;
+            const isMobile = window.innerWidth <= 768;
             if (isMobile) {
                 const header = document.querySelector('header h1');
                 if (header) {
-                    header.style.fontSize = '1.5rem';
+                    header.style.fontSize = '1.8rem';
                 }
             }
             
